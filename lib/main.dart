@@ -1,9 +1,9 @@
 import 'package:app_ta/style.dart';
 import 'package:app_ta/views/home/home.dart';
 import 'package:app_ta/views/kota/kota.dart';
-import 'package:app_ta/views/kue/kue.dart';
 import 'package:app_ta/views/order/order.dart';
-import 'package:app_ta/views/toko/toko.dart';
+import 'package:app_ta/views/qa/qa.dart';
+import 'package:app_ta/views/trip/trip.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -35,7 +35,15 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: KotaScreen(),
+      home: HomeScreens(),
+      routes: <String, WidgetBuilder>{
+//        '/Login' : (context) => new Login();
+        '/Home' : (context) => new HomeScreens(),
+        '/Order' : (context) => new OrderScreen(),
+        '/Kota' : (context) => new KotaScreen(),
+        '/Trip' : (context) => new TripScreen(),
+        '/QA' : (context) => new QAScreen(),
+      },
     );
   }
 }

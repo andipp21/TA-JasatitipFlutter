@@ -67,10 +67,14 @@ class OrderCard extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Table(
+            columnWidths: {
+              0: FlexColumnWidth(0.7),
+              1: FlexColumnWidth(1.0),// i want this one to take the rest available space
+            },
             children: [
               TableRow( children: [
                 Text('Nama Pelanggan'),
-                Text(' : '+order.namaPelanggan)
+                Text(' : '+order.namaPelanggan),
               ]),
               TableRow( children: [
                 Text('No Telp Pelanggan'),

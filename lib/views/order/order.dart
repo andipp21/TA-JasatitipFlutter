@@ -28,6 +28,11 @@ class _OrderScreenState extends State<OrderScreen> {
       ],
       child: new Scaffold(
         backgroundColor: kPrimaryColor,
+        appBar: new AppBar(
+          elevation: 0,
+          title: Text('Aplikasi Jasa Titip'),
+          centerTitle: true,
+        ),
         body: new SafeArea(
             child: SingleChildScrollView(
               child: Column(
