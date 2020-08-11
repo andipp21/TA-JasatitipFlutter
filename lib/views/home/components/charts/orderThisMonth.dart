@@ -1,6 +1,7 @@
 import 'package:app_ta/models/orderModel.dart';
 import 'package:app_ta/style.dart';
 import 'package:app_ta/views/home/components/charts/chartOrderanBulanIni.dart';
+import 'package:app_ta/views/home/components/charts/dataTableStatusOrder.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +15,7 @@ class _DataOrderPerbulanState extends State<DataOrderPerbulan> {
   Widget build(BuildContext context) {
     final order = Provider.of<List<OrderModel>>(context);
     int orderBulanIni = 0;
+
     var bulanIni = DateTime.now().month;
 
     order.forEach((order) {
@@ -42,6 +44,7 @@ class _DataOrderPerbulanState extends State<DataOrderPerbulan> {
                       color: kPrimaryColor
                   ),
                 ),
+                StatusOrderBulanIni(),
                 ChartOrderBulanIni()
               ],
             ),

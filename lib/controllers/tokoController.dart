@@ -23,4 +23,16 @@ class TokoController {
     return tokoCollection.snapshots()
         .map(_tokoListSnapshot);
   }
+
+  Future addData(Map data) async {
+    await tokoCollection.add(data);
+  }
+
+  Future updateData(String id, Map data) async {
+    await tokoCollection.document(id).updateData(data);
+  }
+
+  Future removeData(String id) async {
+    await tokoCollection.document(id).delete();
+  }
 }

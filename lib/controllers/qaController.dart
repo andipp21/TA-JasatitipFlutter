@@ -22,4 +22,16 @@ class QAController {
     return qaCollection.snapshots()
         .map(_qaListSnapshot);
   }
+
+  Future addData(Map data) async {
+    await qaCollection.add(data);
+  }
+
+  Future updateData(String id, Map data) async {
+    await qaCollection.document(id).updateData(data);
+  }
+
+  Future removeData(String id) async {
+    await qaCollection.document(id).delete();
+  }
 }

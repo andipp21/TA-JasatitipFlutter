@@ -4,6 +4,7 @@ import 'package:app_ta/models/kotaModel.dart';
 import 'package:app_ta/models/tripModel.dart';
 import 'package:app_ta/style.dart';
 import 'package:app_ta/views/trip/components/tripList.dart';
+import 'package:app_ta/views/trip/crudScreen/tambahTripScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +19,7 @@ class _TripScreenState extends State<TripScreen> {
     return MultiProvider(
         providers: [
           StreamProvider<List<TripModel>>.value(value: TripController().getAllTrip),
-          StreamProvider<List<KotaModel>>.value(value: KotaController().getAllKota)
+          StreamProvider<List<KotaModel>>.value(value: KotaController().getAllKota),
         ],
       child: new Scaffold(
           appBar: new AppBar(
@@ -32,6 +33,15 @@ class _TripScreenState extends State<TripScreen> {
                 ),
               )
           ),
+        floatingActionButton: new FloatingActionButton(
+          onPressed: (){
+            Navigator.of(context).push(
+                new MaterialPageRoute(builder: (context) => new FormTambahTrip())
+            );
+          },
+          child: Icon(Icons.add, color: kPrimaryColor),
+          backgroundColor: Colors.white,
+        ),
         ),
     );
   }

@@ -1,6 +1,10 @@
+import 'package:app_ta/controllers/tripController.dart';
 import 'package:app_ta/models/kotaModel.dart';
 import 'package:app_ta/models/tripModel.dart';
+import 'package:app_ta/style.dart';
+import 'package:app_ta/views/trip/crudScreen/editTripScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -51,20 +55,57 @@ class TripTile extends StatelessWidget {
           elevation: 8,
           child: Padding(
               padding: EdgeInsets.all(8),
-              child: Table(children: [
-                  TableRow(children: [
-                    Text('Kota Tujuan'),
-                    Text(': $namaKota')
+              child: Column(
+                children: <Widget>[
+                  Table(children: [
+                      TableRow(children: [
+                        Text('Kota Tujuan'),
+                        Text(': $namaKota')
+                      ]),
+                      TableRow(children: [
+                        Text('Tanggal Berangkat'),
+                        Text(': $tanggalBerangakat')
+                      ]),
+                      TableRow(children: [
+                        Text('Tanggal Kembali'),
+                        Text(': $tanggalKembali')
+                      ]),
                   ]),
-                  TableRow(children: [
-                    Text('Tanggal Berangkat'),
-                    Text(': $tanggalBerangakat')
-                  ]),
-                  TableRow(children: [
-                    Text('Tanggal Kembali'),
-                    Text(': $tanggalKembali')
-                  ]),
-              ]),
+                  ButtonBar(
+                    alignment: MainAxisAlignment.center,
+                    children: [
+                      FlatButton(
+                        textColor: kPrimaryColor,
+                        onPressed: () {
+                          // Perform some action
+                          Navigator.of(context).push(
+                              new MaterialPageRoute(builder: (context) => new FormEditTrip(trip: trip, namaKota: namaKota,))
+                          );
+                        },
+                        child: const Text('Edit', style: TextStyle(fontSize: 16),),
+                      ),
+                      FlatButton(
+                        onPressed: () async {
+                          // Perform some action
+                          await TripController().removeData(trip.idTrip).then((value) =>
+                              Fluttertoast.showToast(
+                                  msg: "Berhasil Menghapus Jadwal Perjalan",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.white,
+                                  textColor: kPrimaryColor,
+                                  fontSize: 16.0
+                              )
+                          );
+                        },
+                        child: const Text('Hapus', style: TextStyle(fontSize: 16),),
+                        textColor: Colors.red,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
           )
         ),
     );

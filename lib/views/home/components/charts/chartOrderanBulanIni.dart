@@ -1,5 +1,6 @@
 import 'package:app_ta/models/kotaModel.dart';
 import 'package:app_ta/models/orderModel.dart';
+import 'package:app_ta/style.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -34,28 +35,39 @@ class _ChartOrderBulanIniState extends State<ChartOrderBulanIni> {
       orderan.add(data);
     });
 
-    return DataTable(
-      columns: const <DataColumn>[
-        DataColumn(
-          label: Text(
-            'Nama Kota',
-            style: TextStyle(fontStyle: FontStyle.italic),
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: Column(
+        children: <Widget>[
+          Text(
+            'Data Orderan berdasarkan Kota',
+            style: TextStyle(color: kPrimaryColor),
           ),
-        ),
-        DataColumn(
-          label: Text(
-            'Jumlah Orderan',
-            style: TextStyle(fontStyle: FontStyle.italic),
+          DataTable(
+            columns: const <DataColumn>[
+              DataColumn(
+                label: Text(
+                  'Nama Kota',
+                  style: TextStyle(fontStyle: FontStyle.italic),
+                ),
+              ),
+              DataColumn(
+                label: Text(
+                  'Jumlah Orderan',
+                  style: TextStyle(fontStyle: FontStyle.italic),
+                ),
+              ),
+            ],
+            rows: orderan.map((data) => DataRow(
+                cells: [
+                  DataCell(Text(data['nama'])),
+                  DataCell(Text(data['jumlah'].toString()))
+                ]
+            )
+            ).toList()
           ),
-        ),
-      ],
-      rows: orderan.map((data) => DataRow(
-          cells: [
-            DataCell(Text(data['nama'])),
-            DataCell(Text(data['jumlah'].toString()))
-          ]
-      )
-      ).toList()
+        ],
+      ),
     );
   }
 }

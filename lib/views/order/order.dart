@@ -19,6 +19,11 @@ class OrderScreen extends StatefulWidget {
 class _OrderScreenState extends State<OrderScreen> {
   @override
   Widget build(BuildContext context) {
+
+    String status1 = "Order Sedang di Konfirmasi";
+    String status2 = "Order Akan di Belikan";
+    String status3 = "Order Dapat di Ambil";
+
     return MultiProvider(
       providers: [
         StreamProvider<List<OrderModel>>.value(value: OrderController().getAllOrder),
@@ -26,21 +31,53 @@ class _OrderScreenState extends State<OrderScreen> {
         StreamProvider<List<TokoModel>>.value(value: TokoController().getAllToko),
         StreamProvider<List<KueModel>>.value(value: KueController().getAllKue),
       ],
-      child: new Scaffold(
-        backgroundColor: kPrimaryColor,
-        appBar: new AppBar(
-          elevation: 0,
-          title: Text('Aplikasi Jasa Titip'),
-          centerTitle: true,
-        ),
-        body: new SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  OrderList(),
-                ],
+      child: DefaultTabController(
+        length: 3,
+        child: new Scaffold(
+          backgroundColor: kPrimaryColor,
+          appBar: new AppBar(
+            elevation: 0,
+            title: Text('Aplikasi Jasa Titip'),
+            centerTitle: true,
+            bottom: TabBar(
+              tabs: <Widget>[
+                Tab(text: status1,),
+                Tab(text: status2,),
+                Tab(text: status3,)
+              ],
+            ),
+          ),
+          body: TabBarView(
+            children:[
+              SafeArea(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        OrderList(status: status1,),
+                      ],
+                    ),
+                  )
               ),
-            )
+              SafeArea(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        OrderList(status: status2,),
+                      ],
+                    ),
+                  )
+              ),
+              SafeArea(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        OrderList(status: status3,),
+                      ],
+                    ),
+                  )
+              ),
+            ]
+          ),
         ),
       )
     );

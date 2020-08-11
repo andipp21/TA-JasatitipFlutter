@@ -2,6 +2,7 @@ import 'package:app_ta/controllers/kueController.dart';
 import 'package:app_ta/models/kueModel.dart';
 import 'package:app_ta/style.dart';
 import 'package:app_ta/views/kue/components/kueList.dart';
+import 'package:app_ta/views/kue/crudScreens/tambahKueScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +26,7 @@ class _KueScreenState extends State<KueScreen> {
       child: new Scaffold(
         resizeToAvoidBottomPadding: false,
         appBar: new AppBar(
-          title: Text('Daftar kue di toko ${namaToko}'),
+          title: Text('Daftar kue di toko $namaToko'),
         ),
         backgroundColor: kPrimaryColor,
         body: new SafeArea(
@@ -39,6 +40,15 @@ class _KueScreenState extends State<KueScreen> {
                 ),
               ),
             )
+        ),
+        floatingActionButton: new FloatingActionButton(
+          onPressed: (){
+            Navigator.of(context).push(
+                new MaterialPageRoute(builder: (context) => new FormTambahKue(idToko: idToko, namaToko: namaToko,))
+            );
+          },
+          child: Icon(Icons.add, color: kPrimaryColor),
+          backgroundColor: Colors.white,
         ),
       ),
     );

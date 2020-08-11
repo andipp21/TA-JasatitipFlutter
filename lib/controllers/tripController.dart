@@ -23,4 +23,16 @@ class TripController {
     return tripCollection.snapshots()
         .map(_tripListSnapshot);
   }
+
+  Future addData(Map data) async {
+    await tripCollection.add(data);
+  }
+
+  Future updateData(String id, Map data) async {
+    await tripCollection.document(id).updateData(data);
+  }
+
+  Future removeData(String id) async {
+    await tripCollection.document(id).delete();
+  }
 }

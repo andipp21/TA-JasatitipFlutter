@@ -29,7 +29,19 @@ class OrderController {
 
   //get all data using stream
   Stream<List<OrderModel>> get getAllOrder {
-    return orderCollection.snapshots()
+    return orderCollection.orderBy('tanggal_pesan', descending: true).snapshots()
         .map(_orderListFromSnapshot);
   }
+  Future addData(Map data) async {
+    await orderCollection.add(data);
+  }
+
+  Future updateData(String id, Map data) async {
+    await orderCollection.document(id).updateData(data);
+  }
+
+  Future removeData(String id) async {
+    await orderCollection.document(id).delete();
+  }
+
 }

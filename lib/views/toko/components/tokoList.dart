@@ -1,7 +1,10 @@
+import 'package:app_ta/controllers/tokoController.dart';
 import 'package:app_ta/models/tokoModel.dart';
 import 'package:app_ta/style.dart';
 import 'package:app_ta/views/kue/kue.dart';
+import 'package:app_ta/views/toko/crud/editTokoScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class TokoList extends StatefulWidget {
@@ -19,17 +22,23 @@ class _TokoListState extends State<TokoList> {
   @override
   Widget build(BuildContext context) {
     final toko = Provider.of<List<TokoModel>>(context);
+    var dataToko = [];
+    toko.forEach((toko) {
+      if(toko.idKota == idKota){
+        dataToko.add(toko);
+      }
+    });
+
+    print(dataToko);
 
     return ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      itemCount: toko.length,
+      itemCount: dataToko.length,
       // ignore: missing_return
       itemBuilder: (context, i){
-        if(toko[i].idKota == idKota){
-           return TokoCard(toko: toko[i],);
-        }
+        return TokoCard(toko: dataToko[i],);
       },
     );
   }
@@ -68,14 +77,26 @@ class TokoCard extends StatelessWidget {
                     textColor: kPrimaryColor,
                     onPressed: () {
                       // Perform some action
-                      print('edit ditekan');
+                      Navigator.of(context).push(
+                          new MaterialPageRoute(builder: (context) => new EditTokoForm(toko: toko))
+                      );
                     },
                     child: const Text('Edit', style: TextStyle(fontSize: 16),),
                   ),
                   FlatButton(
                     onPressed: () {
                       // Perform some action
-                      print('hapus ditekan');
+                      TokoController().removeData(toko.idToko).then((value) =>
+                          Fluttertoast.showToast(
+                              msg: "Berhasil Menghapus Kota",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.white,
+                              textColor: kPrimaryColor,
+                              fontSize: 16.0
+                          )
+                      );
                     },
                     child: const Text('Hapus', style: TextStyle(fontSize: 16),),
                     textColor: Colors.red,

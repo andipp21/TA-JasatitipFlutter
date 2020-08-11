@@ -24,4 +24,16 @@ class KueController {
     return kueCollection.snapshots()
         .map(_kueListSnapshot);
   }
+
+  Future addData(Map data) async {
+    await kueCollection.add(data);
+  }
+
+  Future updateData(String id, Map data) async {
+    await kueCollection.document(id).updateData(data);
+  }
+
+  Future removeData(String id) async {
+    await kueCollection.document(id).delete();
+  }
 }

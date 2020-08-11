@@ -1,6 +1,7 @@
 import 'package:app_ta/style.dart';
 import 'package:app_ta/views/home/home.dart';
 import 'package:app_ta/views/kota/kota.dart';
+import 'package:app_ta/views/login.dart';
 import 'package:app_ta/views/order/order.dart';
 import 'package:app_ta/views/qa/qa.dart';
 import 'package:app_ta/views/trip/trip.dart';
@@ -35,9 +36,9 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomeScreens(),
+      home: Login(),
       routes: <String, WidgetBuilder>{
-//        '/Login' : (context) => new Login();
+        '/Login' : (context) => new Login(),
         '/Home' : (context) => new HomeScreens(),
         '/Order' : (context) => new OrderScreen(),
         '/Kota' : (context) => new KotaScreen(),

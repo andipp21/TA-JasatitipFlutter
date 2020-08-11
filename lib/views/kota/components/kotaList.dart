@@ -1,8 +1,11 @@
+import 'package:app_ta/controllers/kotaController.dart';
 import 'package:app_ta/models/kotaModel.dart';
 import 'package:app_ta/style.dart';
+import 'package:app_ta/views/kota/crudScreens/editKotaScreen.dart';
 import 'package:app_ta/views/toko/toko.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class KotaList extends StatefulWidget {
@@ -56,14 +59,26 @@ class KotaTile extends StatelessWidget {
                         textColor: kPrimaryColor,
                         onPressed: () {
                           // Perform some action
-                          print('edit ditekan');
+                          Navigator.of(context).push(
+                            new MaterialPageRoute(builder: (context) => new EditKotaForm(kota: kota,))
+                          );
                         },
                         child: const Text('Edit'),
                       ),
                       FlatButton(
                         onPressed: () {
                           // Perform some action
-                          print('hapus ditekan');
+                          KotaController().removeData(kota.idKota).then((value) =>
+                              Fluttertoast.showToast(
+                                  msg: "Berhasil Menghapus Kota",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: kPrimaryColor,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0
+                              )
+                          );
                         },
                         child: const Text('Hapus'),
                         textColor: Colors.red,

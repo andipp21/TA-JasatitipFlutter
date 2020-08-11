@@ -2,6 +2,7 @@ import 'package:app_ta/controllers/qaController.dart';
 import 'package:app_ta/models/qaModel.dart';
 import 'package:app_ta/style.dart';
 import 'package:app_ta/views/qa/components/qaList.dart';
+import 'package:app_ta/views/qa/crudScreens/tambahQAScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -28,6 +29,15 @@ class _QAScreenState extends State<QAScreen> {
                 children: <Widget>[QAList()],
               ),
             )
+        ),
+        floatingActionButton: new FloatingActionButton(
+          onPressed: (){
+            Navigator.of(context).push(
+                new MaterialPageRoute(builder: (context) => new FormTambahQA())
+            );
+          },
+          child: Icon(Icons.add, color: kPrimaryColor),
+          backgroundColor: Colors.white,
         ),
       ),
     );

@@ -61,151 +61,148 @@ class _ChartOrderanPerbulanState extends State<ChartOrderanPerbulan> {
       }
     });
 
-    return AspectRatio(
-      aspectRatio: 1.7,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-        child: Card(
-          elevation: 0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-          color: Colors.white,
-          child: BarChart(
-            BarChartData(
-              alignment: BarChartAlignment.spaceAround,
-              maxY: 20,
-              barTouchData: BarTouchData(
-                enabled: false,
-                touchTooltipData: BarTouchTooltipData(
-                  tooltipBgColor: Colors.transparent,
-                  tooltipPadding: const EdgeInsets.all(0),
-                  tooltipBottomMargin: 8,
-                  getTooltipItem: (
-                      BarChartGroupData group,
-                      int groupIndex,
-                      BarChartRodData rod,
-                      int rodIndex,
-                      ) {
-                    return BarTooltipItem(
-                      rod.y.round().toString(),
-                      TextStyle(
-                        color: Colors.blueGrey,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    );
-                  },
-                ),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+      child: Card(
+        elevation: 0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+        color: Colors.white,
+        child: BarChart(
+          BarChartData(
+            alignment: BarChartAlignment.spaceAround,
+            maxY: 20,
+            barTouchData: BarTouchData(
+              enabled: false,
+              touchTooltipData: BarTouchTooltipData(
+                tooltipBgColor: Colors.transparent,
+                tooltipPadding: const EdgeInsets.all(0),
+                tooltipBottomMargin: 8,
+                getTooltipItem: (
+                    BarChartGroupData group,
+                    int groupIndex,
+                    BarChartRodData rod,
+                    int rodIndex,
+                    ) {
+                  return BarTooltipItem(
+                    rod.y.round().toString(),
+                    TextStyle(
+                      color: Colors.blueGrey,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+                },
               ),
-              titlesData: FlTitlesData(
-                show: true,
-                leftTitles: SideTitles(
-                  showTitles: false,
-                  textStyle: TextStyle(
-                    color: kPrimaryColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12
-                  ),
-                  margin: 16,
-                  reservedSize: 14,
-                  getTitles: (value) {
-                    switch (value.toInt()) {
-                      case 5: return '5';
-                      case 10: return '10';
-                      case 15: return '15';
-                      default: return '';
-                    }
-                  }
-                ),
-                bottomTitles: SideTitles(
-                  showTitles: true,
-                  textStyle: TextStyle(
-                      color: kPrimaryColor, fontWeight: FontWeight.bold, fontSize: 12),
-                  margin: 12,
-                  getTitles: (double value) {
-                    switch (value.toInt()) {
-                      case 0:
-                        return 'Jan';
-                      case 1:
-                        return 'Feb';
-                      case 2:
-                        return 'Mar';
-                      case 3:
-                        return 'Apr';
-                      case 4:
-                        return 'Mei';
-                      case 5:
-                        return 'Jun';
-                      case 6:
-                        return 'Jul';
-                      case 7:
-                        return 'Agu';
-                      case 8:
-                        return 'Sep';
-                      case 9:
-                        return 'Okt';
-                      case 10:
-                        return 'Nov';
-                      case 11:
-                        return 'Des';
-                      default:
-                        return '';
-                    }
-                  },
-                ),
-              ),
-              borderData: FlBorderData(
-                show: false,
-              ),
-              barGroups: [
-                BarChartGroupData(
-                    x: 0,
-                    barRods: [BarChartRodData(y: jan.toDouble(), color: Colors.lightBlueAccent)],
-                    showingTooltipIndicators: [0]),
-                BarChartGroupData(
-                    x: 1,
-                    barRods: [BarChartRodData(y: feb.toDouble(), color: Colors.lightBlueAccent)],
-                    showingTooltipIndicators: [0]),
-                BarChartGroupData(
-                    x: 2,
-                    barRods: [BarChartRodData(y: mar.toDouble(), color: Colors.lightBlueAccent)],
-                    showingTooltipIndicators: [0]),
-                BarChartGroupData(
-                    x: 3,
-                    barRods: [BarChartRodData(y: apr.toDouble(), color: Colors.lightBlueAccent)],
-                    showingTooltipIndicators: [0]),
-                BarChartGroupData(
-                    x: 4,
-                    barRods: [BarChartRodData(y: mei.toDouble(), color: Colors.lightBlueAccent)],
-                    showingTooltipIndicators: [0]),
-                BarChartGroupData(
-                    x: 5,
-                    barRods: [BarChartRodData(y: jun.toDouble(), color: Colors.lightBlueAccent)],
-                    showingTooltipIndicators: [0]),
-                BarChartGroupData(
-                    x: 6,
-                    barRods: [BarChartRodData(y: jul.toDouble(), color: Colors.lightBlueAccent)],
-                    showingTooltipIndicators: [0]),
-                BarChartGroupData(
-                    x: 7,
-                    barRods: [BarChartRodData(y: agu.toDouble(), color: Colors.lightBlueAccent)],
-                    showingTooltipIndicators: [0]),
-                BarChartGroupData(
-                    x: 8,
-                    barRods: [BarChartRodData(y: sep.toDouble(), color: Colors.lightBlueAccent)],
-                    showingTooltipIndicators: [0]),
-                BarChartGroupData(
-                    x: 9,
-                    barRods: [BarChartRodData(y: okt.toDouble(), color: Colors.lightBlueAccent)],
-                    showingTooltipIndicators: [0]),
-                BarChartGroupData(
-                    x: 10,
-                    barRods: [BarChartRodData(y: nov.toDouble(), color: Colors.lightBlueAccent)],
-                    showingTooltipIndicators: [0]),
-                BarChartGroupData(
-                    x: 11,
-                    barRods: [BarChartRodData(y: des.toDouble(), color: Colors.lightBlueAccent)],
-                    showingTooltipIndicators: [0]),
-              ],
             ),
+            titlesData: FlTitlesData(
+              show: true,
+              leftTitles: SideTitles(
+                showTitles: false,
+                textStyle: TextStyle(
+                  color: kPrimaryColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12
+                ),
+                margin: 16,
+                reservedSize: 14,
+                getTitles: (value) {
+                  switch (value.toInt()) {
+                    case 5: return '5';
+                    case 10: return '10';
+                    case 15: return '15';
+                    default: return '';
+                  }
+                }
+              ),
+              bottomTitles: SideTitles(
+                showTitles: true,
+                textStyle: TextStyle(
+                    color: kPrimaryColor, fontWeight: FontWeight.bold, fontSize: 12),
+                margin: 12,
+                getTitles: (double value) {
+                  switch (value.toInt()) {
+                    case 0:
+                      return 'Jan';
+                    case 1:
+                      return 'Feb';
+                    case 2:
+                      return 'Mar';
+                    case 3:
+                      return 'Apr';
+                    case 4:
+                      return 'Mei';
+                    case 5:
+                      return 'Jun';
+                    case 6:
+                      return 'Jul';
+                    case 7:
+                      return 'Agu';
+                    case 8:
+                      return 'Sep';
+                    case 9:
+                      return 'Okt';
+                    case 10:
+                      return 'Nov';
+                    case 11:
+                      return 'Des';
+                    default:
+                      return '';
+                  }
+                },
+              ),
+            ),
+            borderData: FlBorderData(
+              show: false,
+            ),
+            barGroups: [
+              BarChartGroupData(
+                  x: 0,
+                  barRods: [BarChartRodData(y: jan.toDouble(), color: Colors.lightBlueAccent)],
+                  showingTooltipIndicators: [0]),
+              BarChartGroupData(
+                  x: 1,
+                  barRods: [BarChartRodData(y: feb.toDouble(), color: Colors.lightBlueAccent)],
+                  showingTooltipIndicators: [0]),
+              BarChartGroupData(
+                  x: 2,
+                  barRods: [BarChartRodData(y: mar.toDouble(), color: Colors.lightBlueAccent)],
+                  showingTooltipIndicators: [0]),
+              BarChartGroupData(
+                  x: 3,
+                  barRods: [BarChartRodData(y: apr.toDouble(), color: Colors.lightBlueAccent)],
+                  showingTooltipIndicators: [0]),
+              BarChartGroupData(
+                  x: 4,
+                  barRods: [BarChartRodData(y: mei.toDouble(), color: Colors.lightBlueAccent)],
+                  showingTooltipIndicators: [0]),
+              BarChartGroupData(
+                  x: 5,
+                  barRods: [BarChartRodData(y: jun.toDouble(), color: Colors.lightBlueAccent)],
+                  showingTooltipIndicators: [0]),
+              BarChartGroupData(
+                  x: 6,
+                  barRods: [BarChartRodData(y: jul.toDouble(), color: Colors.lightBlueAccent)],
+                  showingTooltipIndicators: [0]),
+              BarChartGroupData(
+                  x: 7,
+                  barRods: [BarChartRodData(y: agu.toDouble(), color: Colors.lightBlueAccent)],
+                  showingTooltipIndicators: [0]),
+              BarChartGroupData(
+                  x: 8,
+                  barRods: [BarChartRodData(y: sep.toDouble(), color: Colors.lightBlueAccent)],
+                  showingTooltipIndicators: [0]),
+              BarChartGroupData(
+                  x: 9,
+                  barRods: [BarChartRodData(y: okt.toDouble(), color: Colors.lightBlueAccent)],
+                  showingTooltipIndicators: [0]),
+              BarChartGroupData(
+                  x: 10,
+                  barRods: [BarChartRodData(y: nov.toDouble(), color: Colors.lightBlueAccent)],
+                  showingTooltipIndicators: [0]),
+              BarChartGroupData(
+                  x: 11,
+                  barRods: [BarChartRodData(y: des.toDouble(), color: Colors.lightBlueAccent)],
+                  showingTooltipIndicators: [0]),
+            ],
           ),
         ),
       ),

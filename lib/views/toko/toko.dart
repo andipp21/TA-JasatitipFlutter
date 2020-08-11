@@ -2,6 +2,7 @@ import 'package:app_ta/controllers/tokoController.dart';
 import 'package:app_ta/models/tokoModel.dart';
 import 'package:app_ta/style.dart';
 import 'package:app_ta/views/toko/components/tokoList.dart';
+import 'package:app_ta/views/toko/crud/tambahTokoScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +30,7 @@ class _TokoScreenState extends State<TokoScreen> {
         child: new Scaffold(
           resizeToAvoidBottomPadding: false,
           appBar: new AppBar(
-            title: Text('Daftar toko di ${namaKota}'),
+            title: Text('Daftar toko di $namaKota'),
           ),
           backgroundColor: kPrimaryColor,
           body: new SafeArea(
@@ -43,6 +44,15 @@ class _TokoScreenState extends State<TokoScreen> {
                   ),
                 ),
               )
+          ),
+          floatingActionButton: new FloatingActionButton(
+            onPressed: (){
+              Navigator.of(context).push(
+                  new MaterialPageRoute(builder: (context) => new TambahTokoScreen(idKota: idKota, namaKota: namaKota,))
+              );
+            },
+            child: Icon(Icons.add, color: kPrimaryColor),
+            backgroundColor: Colors.white,
           ),
         ),
     );
