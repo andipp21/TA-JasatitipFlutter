@@ -22,7 +22,7 @@ class _KotaListState extends State<KotaList> {
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       itemCount: kota.length,
-      itemBuilder: (context, i){
+      itemBuilder: (context, i) {
         return KotaTile(kota: kota[i]);
       },
     );
@@ -33,6 +33,58 @@ class KotaTile extends StatelessWidget {
   final KotaModel kota;
   KotaTile({this.kota});
 
+  showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Tidak"),
+      onPressed: () async {
+        await Fluttertoast.showToast(
+            msg: "Membatalkan Menghapus Kota ${kota.namaKota}",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: kPrimaryColor,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        await Navigator.pop(context);
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Iya"),
+      onPressed: () async {
+        await KotaController().removeData(kota.idKota).then((value) =>
+            Fluttertoast.showToast(
+                msg: "Berhasil Menghapus Kota ${kota.namaKota}",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: kPrimaryColor,
+                textColor: Colors.white,
+                fontSize: 16.0));
+        await Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Kamu Yakin?"),
+      content: Text(
+          "Data kota ${kota.namaKota} akan terhapus"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -42,11 +94,16 @@ class KotaTile extends StatelessWidget {
         child: Center(
           child: Row(
             children: <Widget>[
-              Expanded(child: FlatButton(
-                child: Text(kota.namaKota, style: TextStyle(fontSize: 16, color: kPrimaryColor), ),
+              Expanded(
+                  child: FlatButton(
+                child: Text(
+                  kota.namaKota,
+                  style: TextStyle(fontSize: 16, color: kPrimaryColor),
+                ),
                 onPressed: () {
                   Navigator.of(context).push(new MaterialPageRoute(
-                      builder: (context) => new TokoScreen(idKota: kota.idKota, namaKota: kota.namaKota),
+                    builder: (context) => new TokoScreen(
+                        idKota: kota.idKota, namaKota: kota.namaKota),
                   ));
                 },
               )),
@@ -59,26 +116,16 @@ class KotaTile extends StatelessWidget {
                         textColor: kPrimaryColor,
                         onPressed: () {
                           // Perform some action
-                          Navigator.of(context).push(
-                            new MaterialPageRoute(builder: (context) => new EditKotaForm(kota: kota,))
-                          );
+                          Navigator.of(context).push(new MaterialPageRoute(
+                              builder: (context) => new EditKotaForm(
+                                    kota: kota,
+                                  )));
                         },
                         child: const Text('Edit'),
                       ),
                       FlatButton(
                         onPressed: () {
-                          // Perform some action
-                          KotaController().removeData(kota.idKota).then((value) =>
-                              Fluttertoast.showToast(
-                                  msg: "Berhasil Menghapus Kota",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.BOTTOM,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor: kPrimaryColor,
-                                  textColor: Colors.white,
-                                  fontSize: 16.0
-                              )
-                          );
+                          showAlertDialog(context);
                         },
                         child: const Text('Hapus'),
                         textColor: Colors.red,
@@ -94,4 +141,3 @@ class KotaTile extends StatelessWidget {
     );
   }
 }
-

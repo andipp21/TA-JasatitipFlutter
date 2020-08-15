@@ -47,6 +47,58 @@ class KueCard extends StatelessWidget {
   final KueModel kue;
   KueCard({this.kue});
 
+  showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Tidak"),
+      onPressed: () async {
+        await Fluttertoast.showToast(
+            msg: "Membatalkan Menghapus Kue ${kue.namaKue}",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: kPrimaryColor,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        await Navigator.pop(context);
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Iya"),
+      onPressed: () async {
+        await KueController().removeData(kue.idKue).then((value) =>
+            Fluttertoast.showToast(
+                msg: "Berhasil Menghapus Kue ${kue.namaKue}",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: kPrimaryColor,
+                textColor: Colors.white,
+                fontSize: 16.0));
+        await Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Kamu Yakin?"),
+      content: Text(
+          "Data kue ${kue.namaKue} akan terhapus"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
 

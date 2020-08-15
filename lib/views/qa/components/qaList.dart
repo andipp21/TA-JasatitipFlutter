@@ -31,6 +31,58 @@ class QATile extends StatelessWidget {
   final QAModel qa;
   QATile({this.qa});
 
+  showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Tidak"),
+      onPressed: () async {
+        await Fluttertoast.showToast(
+            msg: "Membatalkan Menghapus Q&A",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: kPrimaryColor,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        await Navigator.pop(context);
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Iya"),
+      onPressed: () async {
+        await QAController().removeData(qa.idQA).then((value) =>
+            Fluttertoast.showToast(
+                msg: "Berhasil Menghapus Q&A",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: kPrimaryColor,
+                textColor: Colors.white,
+                fontSize: 16.0));
+        await Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Kamu Yakin?"),
+      content: Text(
+          "Data Q&A akan terhapus"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -73,17 +125,7 @@ class QATile extends StatelessWidget {
                     FlatButton(
                       onPressed: () {
                         // Perform some action
-                        QAController().removeData(qa.idQA).then((value) =>
-                            Fluttertoast.showToast(
-                                msg: "Berhasil Menghapus QA",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.BOTTOM,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: kPrimaryColor,
-                                textColor: Colors.white,
-                                fontSize: 16.0
-                            )
-                        );
+                        showAlertDialog(context);
                       },
                       child: const Text('Hapus', style: TextStyle(fontSize: 16),),
                       textColor: Colors.red,

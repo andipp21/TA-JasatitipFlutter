@@ -20,7 +20,12 @@ class TripController {
   }
 
   Stream<List<TripModel>> get getAllTrip {
-    return tripCollection.snapshots()
+    return tripCollection.orderBy("tanggal_berangkat").snapshots()
+        .map(_tripListSnapshot);
+  }
+
+  Stream<List<TripModel>> get getAllTripDesc {
+    return tripCollection.orderBy("tanggal_berangkat",descending: true).snapshots()
         .map(_tripListSnapshot);
   }
 

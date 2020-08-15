@@ -18,7 +18,7 @@ class _TripScreenState extends State<TripScreen> {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          StreamProvider<List<TripModel>>.value(value: TripController().getAllTrip),
+          StreamProvider<List<TripModel>>.value(value: TripController().getAllTripDesc),
           StreamProvider<List<KotaModel>>.value(value: KotaController().getAllKota),
         ],
       child: new Scaffold(

@@ -49,6 +49,58 @@ class TokoCard extends StatelessWidget {
   final TokoModel toko;
   TokoCard({this.toko});
 
+  showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Tidak"),
+      onPressed: () async {
+        await Fluttertoast.showToast(
+            msg: "Membatalkan Menghapus Toko ${toko.namaToko}",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: kPrimaryColor,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        await Navigator.pop(context);
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Iya"),
+      onPressed: () async {
+        await TokoController().removeData(toko.idToko).then((value) =>
+            Fluttertoast.showToast(
+                msg: "Berhasil Menghapus Toko ${toko.namaToko}",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: kPrimaryColor,
+                textColor: Colors.white,
+                fontSize: 16.0));
+        await Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Kamu Yakin?"),
+      content: Text(
+          "Data Toko ${toko.namaToko} akan terhapus"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -86,17 +138,7 @@ class TokoCard extends StatelessWidget {
                   FlatButton(
                     onPressed: () {
                       // Perform some action
-                      TokoController().removeData(toko.idToko).then((value) =>
-                          Fluttertoast.showToast(
-                              msg: "Berhasil Menghapus Kota",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.white,
-                              textColor: kPrimaryColor,
-                              fontSize: 16.0
-                          )
-                      );
+                      showAlertDialog(context);
                     },
                     child: const Text('Hapus', style: TextStyle(fontSize: 16),),
                     textColor: Colors.red,
