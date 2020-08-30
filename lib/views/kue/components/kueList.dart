@@ -137,17 +137,7 @@ class KueCard extends StatelessWidget {
                     FlatButton(
                       onPressed: () {
                         // Perform some action
-                        KueController().removeData(kue.idKue).then((value) =>
-                            Fluttertoast.showToast(
-                                msg: "Berhasil Menghapus Kue",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.BOTTOM,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: kPrimaryColor,
-                                textColor: Colors.white,
-                                fontSize: 16.0
-                            )
-                        );
+                        showAlertDialog(context);
                       },
                       child: const Text('Hapus', style: TextStyle(fontSize: 16),),
                       textColor: Colors.red,
