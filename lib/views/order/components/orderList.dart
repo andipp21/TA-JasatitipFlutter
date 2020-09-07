@@ -5,7 +5,6 @@ import 'package:app_ta/models/orderModel.dart';
 import 'package:app_ta/models/tokoModel.dart';
 import 'package:app_ta/style.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class OrderList extends StatefulWidget {
@@ -50,6 +49,39 @@ class OrderCard extends StatelessWidget {
   final OrderModel order;
   OrderCard({this.order});
 
+  changeTanggal(DateTime date){
+    var tahun = date.year;
+    var bulan = '';
+    var tanggal = date.day;
+    var hari = '';
+
+    switch(date.weekday) {
+      case 0: hari = "Minggu"; break;
+      case 1: hari = "Senin"; break;
+      case 2: hari = "Selasa"; break;
+      case 3: hari = "Rabu"; break;
+      case 4: hari = "Kamis"; break;
+      case 5: hari = "Jum'at"; break;
+      case 6: hari = "Sabtu"; break;
+    }
+    switch(date.month) {
+      case 0: bulan = "Januari"; break;
+      case 1: bulan = "Februari"; break;
+      case 2: bulan = "Maret"; break;
+      case 3: bulan = "April"; break;
+      case 4: bulan = "Mei"; break;
+      case 5: bulan = "Juni"; break;
+      case 6: bulan = "Juli"; break;
+      case 7: bulan = "Agustus"; break;
+      case 8: bulan = "September"; break;
+      case 9: bulan = "Oktober"; break;
+      case 10: bulan = "November"; break;
+      case 11: bulan = "Desember"; break;
+    }
+
+    return '$hari, $tanggal $bulan $tahun';
+  }
+
   @override
   Widget build(BuildContext context) {
     final kota = Provider.of<List<KotaModel>>(context);
@@ -62,7 +94,9 @@ class OrderCard extends StatelessWidget {
     String status3 = "Order Dapat di Ambil";
 
     var tanggalPesan = order.tanggalPesan.toDate();
-    var tPesan = new DateFormat("dd-MM-yyyy").format(tanggalPesan);
+    var tPesan = changeTanggal(tanggalPesan);
+
+
 
     kota.forEach((element) {
       if(element.idKota == order.idKota){
@@ -94,7 +128,7 @@ class OrderCard extends StatelessWidget {
           // Perform some action
           await OrderController().updateData(order.idOrder, data);
         },
-        child: Text("ubah status order ke $status2", style: TextStyle(fontSize: 16), textAlign: TextAlign.center,),
+        child: Text("Konfirmasi kue akan dibelikan", style: TextStyle(fontSize: 16), textAlign: TextAlign.center,),
       );
     } else if (order.statusOrder == status2){
       _button = FlatButton(
@@ -107,7 +141,7 @@ class OrderCard extends StatelessWidget {
             // Perform some action
             await OrderController().updateData(order.idOrder, data);
           },
-          child: Text("ubah status order ke $status3", style: TextStyle(fontSize: 16), textAlign: TextAlign.center)
+          child: Text("Konfirmasi kue telah dibeli", style: TextStyle(fontSize: 16), textAlign: TextAlign.center)
       );
     } else {
       _button = null;
@@ -131,7 +165,7 @@ class OrderCard extends StatelessWidget {
                     Text(' : '+order.namaPelanggan),
                   ]),
                   TableRow( children: [
-                    Text('No Telp Pelanggan'),
+                    Text('No Telp'),
                     Text(' : '+order.noTelpPelanggan)
                   ]),
                   TableRow( children: [
@@ -155,7 +189,7 @@ class OrderCard extends StatelessWidget {
                     Text(' : '+order.jumlahKue.toString())
                   ]),
                   TableRow( children: [
-                    Text('Total Pembayaran'),
+                    Text('Total Biaya'),
                     Text(' : '+order.totalBiaya.toString())
                   ]),
                   TableRow( children: [
@@ -163,7 +197,7 @@ class OrderCard extends StatelessWidget {
                     Text(' : '+order.tanggalAmbil)
                   ]),
                   TableRow( children: [
-                    Text('Tanggal Pesan Masuk'),
+                    Text('Tanggal Pesan'),
                     Text(' : '+tPesan.toString())
                   ]),
                   TableRow( children: [

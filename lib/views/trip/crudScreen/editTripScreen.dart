@@ -5,6 +5,7 @@ import 'package:app_ta/models/tripModel.dart';
 import 'package:app_ta/style.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class FormEditTrip extends StatefulWidget {
@@ -23,8 +24,11 @@ class _FormEditTripState extends State<FormEditTrip> {
   @override
   Widget build(BuildContext context) {
 
-    return StreamProvider<List<KotaModel>>.value(
-      value: KotaController().getAllKota,
+    return MultiProvider(
+      providers: [
+        StreamProvider<List<KotaModel>>.value(value: KotaController().getAllKota),
+        StreamProvider<List<TripModel>>.value(value: TripController().getAllTrip)
+      ],
       child: Scaffold(
         appBar: AppBar(
           title: Text('Ubah Jadwal Trip'),
@@ -52,6 +56,8 @@ class _FormEditState extends State<FormEdit> {
   final String nKota;
   _FormEditState({this.trip, this.nKota});
 
+  bool _buttonDisabled;
+
   var kotaTerpilih;
 
   var tBerangkat = DateTime.now();
@@ -72,6 +78,7 @@ class _FormEditState extends State<FormEdit> {
       setState(() {
         tBerangkat=pilih;
         tglBerangkat = "${pilih.day}-${pilih.month}-${pilih.year}";
+        _buttonDisabled = false;
       });
     }
   }
@@ -88,6 +95,7 @@ class _FormEditState extends State<FormEdit> {
       setState(() {
         tKembali=pilih;
         tglKembali = "${pilih.day}-${pilih.month}-${pilih.year}";
+        _buttonDisabled = false;
       });
     }
   }
@@ -96,6 +104,8 @@ class _FormEditState extends State<FormEdit> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    _buttonDisabled = true;
 
 //    kotaTerpilih = nKota;
     tBerangkat = trip.tanggalBerangkat.toDate();
@@ -109,6 +119,7 @@ class _FormEditState extends State<FormEdit> {
   Widget build(BuildContext context) {
 
     final kota = Provider.of<List<KotaModel>>(context);
+    final dataTrip = Provider.of<List<TripModel>>(context);
 
     List<DropdownMenuItem> kt = [];
 
@@ -140,6 +151,7 @@ class _FormEditState extends State<FormEdit> {
                 onChanged: (kotaSekarang) {
                   setState(() {
                     kotaTerpilih = kotaSekarang;
+                    _buttonDisabled = false;
                   });
                 },
                 value: kotaTerpilih != null ? kotaTerpilih: idKota,
@@ -169,40 +181,68 @@ class _FormEditState extends State<FormEdit> {
           ),
           RaisedButton(
             color: kPrimaryColor,
-            onPressed: () async {
+            onPressed: _buttonDisabled ? null : () async {
+              var _dataAda = false;
 
-              if(kotaTerpilih ==  null){
-                kotaTerpilih = trip.idKotaTujuan;
+              dataTrip.forEach((element) {
+                var tanggalBerangkat = new DateFormat("dd-MM-yyyy").format(tBerangkat);
+                var tanggalKembali = new DateFormat("dd-MM-yyyy").format(tKembali);
+                var tripKembali = new DateFormat("dd-MM-yyyy").format(element.tanggalKembali.toDate());
+                var tripBerangkat = new DateFormat("dd-MM-yyyy").format(element.tanggalBerangkat.toDate());
+
+                if(tanggalBerangkat == tripBerangkat ||
+                    tanggalBerangkat == tripKembali ||
+                    tanggalKembali == tripBerangkat ||
+                    tanggalKembali == tripKembali)
+                {
+                  _dataAda = true;
+                }
+              });
+
+              if(_dataAda){
+                Fluttertoast.showToast(
+                    msg: "Tanggal Keberangkatan atau Kembali kamu telah ada sebelumnya",
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: kPrimaryColor,
+                    textColor: Colors.white,
+                    fontSize: 16.0
+                );
+              }else{
+                if(kotaTerpilih ==  null){
+                  kotaTerpilih = trip.idKotaTujuan;
+                }
+
+                if(tBerangkat == null){
+                  tBerangkat = trip.tanggalBerangkat.toDate();
+                }
+
+                if(tKembali == null){
+                  tKembali = trip.tanggalKembali.toDate();
+                }
+
+                var data = {
+                  "id_kota_tujuan" : kotaTerpilih,
+                  "tanggal_berangkat" : tBerangkat,
+                  "tanggal_kembali" : tKembali
+                };
+
+                print(data);
+
+                await TripController().updateData(trip.idTrip, data).then((value) =>
+                    Fluttertoast.showToast(
+                        msg: "Berhasil Mengubah data Jadwal Perjalan",
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: kPrimaryColor,
+                        textColor: Colors.white,
+                        fontSize: 16.0
+                    )
+                );
+                Navigator.pop(context);
               }
-
-              if(tBerangkat == null){
-                tBerangkat = trip.tanggalBerangkat.toDate();
-              }
-
-              if(tKembali == null){
-                tKembali = trip.tanggalKembali.toDate();
-              }
-
-              var data = {
-                "id_kota_tujuan" : kotaTerpilih,
-                "tanggal_berangkat" : tBerangkat,
-                "tanggal_kembali" : tKembali
-              };
-
-              print(data);
-
-              await TripController().updateData(trip.idTrip, data).then((value) =>
-                  Fluttertoast.showToast(
-                      msg: "Berhasil Mengubah data Jadwal Perjalan",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: kPrimaryColor,
-                      textColor: Colors.white,
-                      fontSize: 16.0
-                  )
-              );
-              await Navigator.pop(context);
             },
             child: Text('Tambah Jadwal Perjalanan', style: TextStyle(color: Colors.white),),
           )

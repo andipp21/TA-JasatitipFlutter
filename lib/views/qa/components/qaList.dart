@@ -38,7 +38,7 @@ class QATile extends StatelessWidget {
       onPressed: () async {
         await Fluttertoast.showToast(
             msg: "Membatalkan Menghapus Q&A",
-            toastLength: Toast.LENGTH_SHORT,
+            toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
             backgroundColor: kPrimaryColor,
@@ -53,7 +53,7 @@ class QATile extends StatelessWidget {
         await QAController().removeData(qa.idQA).then((value) =>
             Fluttertoast.showToast(
                 msg: "Berhasil Menghapus Q&A",
-                toastLength: Toast.LENGTH_SHORT,
+                toastLength: Toast.LENGTH_LONG,
                 gravity: ToastGravity.BOTTOM,
                 timeInSecForIosWeb: 1,
                 backgroundColor: kPrimaryColor,

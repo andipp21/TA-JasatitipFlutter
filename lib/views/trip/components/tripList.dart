@@ -1,13 +1,10 @@
-import 'package:app_ta/controllers/signinController.dart';
 import 'package:app_ta/controllers/tripController.dart';
 import 'package:app_ta/models/kotaModel.dart';
 import 'package:app_ta/models/tripModel.dart';
 import 'package:app_ta/style.dart';
 import 'package:app_ta/views/trip/crudScreen/editTripScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';import 'package:provider/provider.dart';
 
 class TripList extends StatefulWidget {
   @override
@@ -30,6 +27,7 @@ class _TripListState extends State<TripList> {
   }
 }
 
+// ignore: must_be_immutable
 class TripTile extends StatelessWidget {
   final TripModel trip;
   TripTile({this.trip});
@@ -43,13 +41,13 @@ class TripTile extends StatelessWidget {
       onPressed: () async {
         await Fluttertoast.showToast(
             msg: "Perjalanan ke $namaKota batal dihapus",
-            toastLength: Toast.LENGTH_SHORT,
+            toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
             backgroundColor: kPrimaryColor,
             textColor: Colors.white,
             fontSize: 16.0);
-        await Navigator.pop(context);
+        Navigator.pop(context);
       },
     );
     Widget continueButton = FlatButton(
@@ -58,13 +56,13 @@ class TripTile extends StatelessWidget {
         await TripController().removeData(trip.idTrip).then((value) =>
             Fluttertoast.showToast(
                 msg: "Berhasil Menghapus Perjalanan ke kota $namaKota",
-                toastLength: Toast.LENGTH_SHORT,
+                toastLength: Toast.LENGTH_LONG,
                 gravity: ToastGravity.BOTTOM,
                 timeInSecForIosWeb: 1,
                 backgroundColor: kPrimaryColor,
                 textColor: Colors.white,
                 fontSize: 16.0));
-        await Navigator.pop(context);
+        Navigator.pop(context);
       },
     );
 
@@ -88,14 +86,47 @@ class TripTile extends StatelessWidget {
     );
   }
 
+  changeTanggal(DateTime date){
+    var tahun = date.year;
+    var bulan = '';
+    var tanggal = date.day;
+    var hari = '';
+
+    switch(date.weekday) {
+      case 0: hari = "Minggu"; break;
+      case 1: hari = "Senin"; break;
+      case 2: hari = "Selasa"; break;
+      case 3: hari = "Rabu"; break;
+      case 4: hari = "Kamis"; break;
+      case 5: hari = "Jum'at"; break;
+      case 6: hari = "Sabtu"; break;
+    }
+    switch(date.month) {
+      case 0: bulan = "Januari"; break;
+      case 1: bulan = "Februari"; break;
+      case 2: bulan = "Maret"; break;
+      case 3: bulan = "April"; break;
+      case 4: bulan = "Mei"; break;
+      case 5: bulan = "Juni"; break;
+      case 6: bulan = "Juli"; break;
+      case 7: bulan = "Agustus"; break;
+      case 8: bulan = "September"; break;
+      case 9: bulan = "Oktober"; break;
+      case 10: bulan = "November"; break;
+      case 11: bulan = "Desember"; break;
+    }
+
+    return '$hari, $tanggal $bulan $tahun';
+  }
+
   @override
   Widget build(BuildContext context) {
 
     final kota = Provider.of<List<KotaModel>>(context);
     var tBerangkat = trip.tanggalBerangkat.toDate();
     var tKembali = trip.tanggalKembali.toDate();
-    var tanggalBerangakat = new DateFormat("dd-MM-yyyy").format(tBerangkat);
-    var tanggalKembali = new DateFormat("dd-MM-yyyy").format(tKembali);
+    var tanggalBerangakat = changeTanggal(tBerangkat);
+    var tanggalKembali = changeTanggal(tKembali);
 
     kota.forEach((element) {
       if(element.idKota == trip.idKotaTujuan){
@@ -140,19 +171,7 @@ class TripTile extends StatelessWidget {
                       ),
                       FlatButton(
                         onPressed: () async {
-                          // Perform some action
                           showAlertDialog(context);
-//                          await TripController().removeData(trip.idTrip).then((value) =>
-//                              Fluttertoast.showToast(
-//                                  msg: "Berhasil Menghapus Jadwal Perjalan",
-//                                  toastLength: Toast.LENGTH_SHORT,
-//                                  gravity: ToastGravity.BOTTOM,
-//                                  timeInSecForIosWeb: 1,
-//                                  backgroundColor: Colors.white,
-//                                  textColor: kPrimaryColor,
-//                                  fontSize: 16.0
-//                              )
-//                          );
                         },
                         child: const Text('Hapus', style: TextStyle(fontSize: 16),),
                         textColor: Colors.red,

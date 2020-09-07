@@ -54,7 +54,7 @@ class KueCard extends StatelessWidget {
       onPressed: () async {
         await Fluttertoast.showToast(
             msg: "Membatalkan Menghapus Kue ${kue.namaKue}",
-            toastLength: Toast.LENGTH_SHORT,
+            toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
             backgroundColor: kPrimaryColor,
@@ -69,7 +69,7 @@ class KueCard extends StatelessWidget {
         await KueController().removeData(kue.idKue).then((value) =>
             Fluttertoast.showToast(
                 msg: "Berhasil Menghapus Kue ${kue.namaKue}",
-                toastLength: Toast.LENGTH_SHORT,
+                toastLength: Toast.LENGTH_LONG,
                 gravity: ToastGravity.BOTTOM,
                 timeInSecForIosWeb: 1,
                 backgroundColor: kPrimaryColor,

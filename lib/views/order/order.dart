@@ -41,9 +41,9 @@ class _OrderScreenState extends State<OrderScreen> {
             centerTitle: true,
             bottom: TabBar(
               tabs: <Widget>[
-                Tab(text: status1,),
-                Tab(text: status2,),
-                Tab(text: status3,)
+                Tab(text: 'Konfirmasi',),
+                Tab(text: 'Dibelikan',),
+                Tab(text: 'Diambil',)
               ],
             ),
           ),

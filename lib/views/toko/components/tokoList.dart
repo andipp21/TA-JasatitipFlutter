@@ -56,7 +56,7 @@ class TokoCard extends StatelessWidget {
       onPressed: () async {
         await Fluttertoast.showToast(
             msg: "Membatalkan Menghapus Toko ${toko.namaToko}",
-            toastLength: Toast.LENGTH_SHORT,
+            toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
             backgroundColor: kPrimaryColor,
@@ -71,7 +71,7 @@ class TokoCard extends StatelessWidget {
         await TokoController().removeData(toko.idToko).then((value) =>
             Fluttertoast.showToast(
                 msg: "Berhasil Menghapus Toko ${toko.namaToko}",
-                toastLength: Toast.LENGTH_SHORT,
+                toastLength: Toast.LENGTH_LONG,
                 gravity: ToastGravity.BOTTOM,
                 timeInSecForIosWeb: 1,
                 backgroundColor: kPrimaryColor,

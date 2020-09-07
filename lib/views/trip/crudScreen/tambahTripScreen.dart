@@ -1,6 +1,7 @@
 import 'package:app_ta/controllers/kotaController.dart';
 import 'package:app_ta/controllers/tripController.dart';
 import 'package:app_ta/models/kotaModel.dart';
+import 'package:app_ta/models/tripModel.dart';
 import 'package:app_ta/style.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -16,8 +17,11 @@ class _FormTambahTripState extends State<FormTambahTrip> {
   @override
   Widget build(BuildContext context) {
 
-    return StreamProvider<List<KotaModel>>.value(
-      value: KotaController().getAllKota,
+    return MultiProvider(
+      providers: [
+        StreamProvider<List<KotaModel>>.value(value: KotaController().getAllKota),
+        StreamProvider<List<TripModel>>.value(value: TripController().getAllTrip)
+      ],
       child: Scaffold(
         appBar: AppBar(
           title: Text('Tambah Jadwal Trip'),
@@ -80,7 +84,6 @@ class _FormTripState extends State<FormTrip> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     tglBerangkat = "${tBerangkat.day}-${tBerangkat.month}-${tBerangkat.year}";
@@ -91,6 +94,7 @@ class _FormTripState extends State<FormTrip> {
   Widget build(BuildContext context) {
 
     final kota = Provider.of<List<KotaModel>>(context);
+    final trip = Provider.of<List<TripModel>>(context);
 
     List<DropdownMenuItem> kt = [];
     kota.forEach((element) {
@@ -145,24 +149,53 @@ class _FormTripState extends State<FormTrip> {
           RaisedButton(
             color: kPrimaryColor,
             onPressed: () async {
-              var data = {
-                "id_kota_tujuan" : kotaTerpilih,
-                "tanggal_berangkat" : tBerangkat,
-                "tanggal_kembali" : tKembali
-              };
+              var _dataAda = false;
 
-              await TripController().addData(data).then((value) =>
-                  Fluttertoast.showToast(
-                  msg: "Berhasil Menambahkan Jadwal Perjalan Baru",
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.BOTTOM,
-                  timeInSecForIosWeb: 1,
-                  backgroundColor: kPrimaryColor,
-                  textColor: Colors.white,
-                  fontSize: 16.0
-              ));
+              trip.forEach((element) {
+                var tanggalBerangkat = new DateFormat("dd-MM-yyyy").format(tBerangkat);
+                var tanggalKembali = new DateFormat("dd-MM-yyyy").format(tKembali);
+                var tripKembali = new DateFormat("dd-MM-yyyy").format(element.tanggalKembali.toDate());
+                var tripBerangkat = new DateFormat("dd-MM-yyyy").format(element.tanggalBerangkat.toDate());
 
-              await Navigator.pop(context);
+                if(tanggalBerangkat == tripBerangkat ||
+                    tanggalBerangkat == tripKembali ||
+                    tanggalKembali == tripBerangkat ||
+                    tanggalKembali == tripKembali)
+                {
+                  _dataAda = true;
+                }
+              });
+
+              if(_dataAda){
+                Fluttertoast.showToast(
+                    msg: "Tanggal Keberangkatan atau Kembali kamu telah ada sebelumnya",
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: kPrimaryColor,
+                    textColor: Colors.white,
+                    fontSize: 16.0
+                );
+              } else {
+                var data = {
+                  "id_kota_tujuan" : kotaTerpilih,
+                  "tanggal_berangkat" : tBerangkat,
+                  "tanggal_kembali" : tKembali
+                };
+
+                await TripController().addData(data).then((value) =>
+                    Fluttertoast.showToast(
+                        msg: "Berhasil Menambahkan Jadwal Perjalan Baru",
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: kPrimaryColor,
+                        textColor: Colors.white,
+                        fontSize: 16.0
+                    ));
+
+                Navigator.pop(context);
+              }
             },
             child: Text('Tambah Jadwal Perjalanan', style: TextStyle(color: Colors.white),),
           )
